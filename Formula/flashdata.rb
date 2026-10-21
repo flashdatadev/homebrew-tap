@@ -1,5 +1,5 @@
 class Flashdata < Formula
-  desc "Google Search, YouTube data, and bulk workflows from the command line"
+  desc "Google Search, YouTube data, and bulk exports"
   homepage "https://flashdata.dev"
   version "1.0.0"
   license "MIT"
@@ -42,8 +42,8 @@ class Flashdata < Formula
     %w[auth bulk query runs search youtube].each { |name| assert_includes names, name }
 
     (testpath/"invalid-query.json").write("{}")
-    result = JSON.parse(shell_output("#{bin}/flashdata query --input invalid-query.json " \
-                                    "--dry-run --json --non-interactive 2>&1", 1))
+    command = "#{bin}/flashdata query --input invalid-query.json --dry-run --json --non-interactive"
+    result = JSON.parse(shell_output("#{command} 2>&1", 1))
     assert_equal false, result.fetch("ok")
     assert_equal "invalid_source", result.fetch("error").fetch("code")
   end
