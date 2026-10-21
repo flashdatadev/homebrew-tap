@@ -1,0 +1,56 @@
+name: Homebrew checks
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  release-assets:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Verify every release archive and platform
+        run: python3 scripts/verify_release.py
+  install:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, ubuntu-24.04-arm, macos-15-intel, macos-15]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    env:
+      HOMEBREW_NO_AUTO_UPDATE: '1'
+      HOMEBREW_NO_ANALYTICS: '1'
+      HOMEBREW_NO_ENV_HINTS: '1'
+    steps:
+      - name: Set up the official tap
+        uses: Homebrew/actions/setup-homebrew@848c272c7bfe984a197bd4d16383f4c106ec61e6 # 2026.09.21.1
+        with:
+          stable: true
+      - name: Check formula style
+        run: brew style flashdatadev/tap/flashdata
+      - name: Audit formula
+        run: brew audit --strict --online flashdatadev/tap/flashdata
+      - name: Install using the public command
+        run: brew install --verbose flashdatadev/tap/flashdata
+      - name: Test the installed executable offline
+        run: |
+          brew test flashdatadev/tap/flashdata
+          flashdata --version --json
+          flashdata --help
+          brew linkage --test flashdatadev/tap/flashdata
+          test -f "$(brew --prefix flashdata)/share/flashdata/examples/query.json"
+          test -f "$(brew --prefix flashdata)/share/doc/flashdata/README.zh-CN.md"
+      - name: Test reinstall and uninstall
+        run: |
+          brew reinstall flashdatadev/tap/flashdata
+          brew test flashdatadev/tap/flashdata
+          brew uninstall flashdata
+          test ! -e "$(brew --prefix)/bin/flashdata"
