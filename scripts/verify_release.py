@@ -50,9 +50,9 @@ def verify(item, published):
 
 def main():
     formula = (ROOT / "Formula/flashdata.rb").read_text()
-    version = re.search(r'^  version "([^"]+)"$', formula, re.M).group(1)
-    base = f"https://github.com/flashdatadev/flashdata-cli/releases/download/v{version}"
     items = re.findall(r'url "([^"]+)"\s+sha256 "([0-9a-f]{64})"', formula)
+    version = re.search(r'/releases/download/v(\d+\.\d+\.\d+)/', items[0][0]).group(1)
+    base = f"https://github.com/flashdatadev/flashdata-cli/releases/download/v{version}"
     expected = {f"{base}/flashdata_{version}_{system}_{cpu}.tar.gz" for system in ("linux", "darwin") for cpu in ("amd64", "arm64")}
     if len(items) != 4 or {url for url, _ in items} != expected:
         raise ValueError("Expected exactly the four version-pinned official platform archives")

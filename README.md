@@ -54,7 +54,7 @@ Examples, English/Chinese release documentation and third-party license notices 
 For each new stable CLI release:
 
 1. Publish the tested Linux/macOS amd64/arm64 archives and `SHA256SUMS` in the CLI repository.
-2. Update `version`, all four versioned URLs and their SHA-256 values in `Formula/flashdata.rb`. Preserve the published archives and old tags.
+2. Update all four versioned URLs and their SHA-256 values in `Formula/flashdata.rb`; Homebrew infers the version from the URL. Preserve the published archives and old tags.
 3. Run `python3 scripts/verify_release.py`, then `brew style`, `brew audit --strict --online`, installation and `brew test` for `flashdatadev/tap/flashdata`.
 4. Check [GitHub Actions](https://github.com/flashdatadev/homebrew-tap/actions) before announcing the upgrade. CI also checks reinstall/uninstall and the packaged docs/examples. Formula tests run offline and submit no API work.
 

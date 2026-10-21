@@ -54,7 +54,7 @@ ls "$(brew --prefix flashdata)/share/doc/flashdata"
 每次发布新的 CLI 稳定版本时：
 
 1. 在 CLI 仓库发布经过测试的 Linux/macOS amd64/arm64 归档和 `SHA256SUMS`。
-2. 更新 `Formula/flashdata.rb` 中的 `version`、四个平台的固定版本 URL 及 SHA-256。保留已发布归档和旧标签。
+2. 更新 `Formula/flashdata.rb` 中四个平台的固定版本 URL 及 SHA-256；Homebrew 会从 URL 推断版本。保留已发布归档和旧标签。
 3. 运行 `python3 scripts/verify_release.py`，并对 `flashdatadev/tap/flashdata` 运行 `brew style`、`brew audit --strict --online`、安装及 `brew test`。
 4. 确认 [GitHub Actions](https://github.com/flashdatadev/homebrew-tap/actions) 通过后再宣布升级。CI 还会检查重新安装、卸载及附带文档/示例；配方测试离线运行，不提交 API 任务。
 

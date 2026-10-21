@@ -1,7 +1,6 @@
 class Flashdata < Formula
   desc "Google Search, YouTube data, and bulk exports"
   homepage "https://flashdata.dev"
-  version "1.0.0"
   license "MIT"
 
   on_macos do
