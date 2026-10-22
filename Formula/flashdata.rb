@@ -5,23 +5,23 @@ class Flashdata < Formula
 
   on_macos do
     on_arm do
-      url "https://github.com/flashdatadev/flashdata-cli/releases/download/v1.0.0/flashdata_1.0.0_darwin_arm64.tar.gz"
-      sha256 "3733f5a52bc0bd0bc4cd7bf33ac4b51e8d0d9c35e164c90bd1c240916e93c43e"
+      url "https://github.com/flashdatadev/flashdata-cli/releases/download/v1.0.1/flashdata_1.0.1_darwin_arm64.tar.gz"
+      sha256 "085e3f3381e360d634a812cb008fbd5b2cdc1d9d5e18da621300b1d31ff15245"
     end
     on_intel do
-      url "https://github.com/flashdatadev/flashdata-cli/releases/download/v1.0.0/flashdata_1.0.0_darwin_amd64.tar.gz"
-      sha256 "c0db80277b8104b448480623e8e8ca23a5004000581fcf0e8eed65576646e578"
+      url "https://github.com/flashdatadev/flashdata-cli/releases/download/v1.0.1/flashdata_1.0.1_darwin_amd64.tar.gz"
+      sha256 "e0ed83643f7e1a8934c034c1c11d8db9bbcd52ea4edba8c679835fffdef3108d"
     end
   end
 
   on_linux do
     on_arm do
-      url "https://github.com/flashdatadev/flashdata-cli/releases/download/v1.0.0/flashdata_1.0.0_linux_arm64.tar.gz"
-      sha256 "13bd9e6b8514d60442a5d3cb8d149bfc4133328ade9d4465882f3bcf921709ab"
+      url "https://github.com/flashdatadev/flashdata-cli/releases/download/v1.0.1/flashdata_1.0.1_linux_arm64.tar.gz"
+      sha256 "a3215f7a0dfa979e6e8ee1defcbeb884b43948c35cd21bbde745c358f6671bb6"
     end
     on_intel do
-      url "https://github.com/flashdatadev/flashdata-cli/releases/download/v1.0.0/flashdata_1.0.0_linux_amd64.tar.gz"
-      sha256 "dffa1497b881e9945d61de9ed498375335dcd80956391adbaeb9bb8f2bc9dfae"
+      url "https://github.com/flashdatadev/flashdata-cli/releases/download/v1.0.1/flashdata_1.0.1_linux_amd64.tar.gz"
+      sha256 "58547fd48ebec06f028ca1f496615c5550b299048b02cbcab5bc0331652ec369"
     end
   end
 
@@ -39,6 +39,9 @@ class Flashdata < Formula
     result = JSON.parse(shell_output("#{bin}/flashdata commands --json"))
     names = result.fetch("data").fetch("commands").map { |command| command.fetch("name") }
     %w[auth bulk query runs search youtube].each { |name| assert_includes names, name }
+    discovery = result.fetch("data").fetch("commands").find { |command| command.fetch("name") == "discover" }
+    discovery_names = discovery.fetch("commands").map { |command| command.fetch("name") }
+    %w[plans status].each { |name| assert_includes discovery_names, name }
 
     (testpath/"invalid-query.json").write("{}")
     command = "#{bin}/flashdata query --input invalid-query.json --dry-run --json --non-interactive"

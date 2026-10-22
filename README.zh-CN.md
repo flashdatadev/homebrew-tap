@@ -14,7 +14,7 @@ flashdata --version
 flashdata --help
 ```
 
-配方会自动选择适用于 Linux amd64/arm64 或 macOS Intel/Apple Silicon 的 **v1.0.0** 官方可执行文件，并验证 SHA-256 校验和。无需安装 Go、Python 或 Node.js。此软件源由 FlashData 在 `flashdatadev/homebrew-tap` 中维护。
+配方会自动选择适用于 Linux amd64/arm64 或 macOS Intel/Apple Silicon 的 **v1.0.1** 官方可执行文件，并验证 SHA-256 校验和。无需安装 Go、Python 或 Node.js。此软件源由 FlashData 在 `flashdatadev/homebrew-tap` 中维护。
 
 使用终端隐藏输入，从 [FlashData 账户](https://flashdata.dev)导入密钥：
 
@@ -47,7 +47,7 @@ ls "$(brew --prefix flashdata)/share/flashdata/examples"
 ls "$(brew --prefix flashdata)/share/doc/flashdata"
 ```
 
-软件包包含示例、中英文版本文档和第三方许可证声明。附带文档为 v1.0.0 发布快照；最新安装说明位于 CLI 仓库。Windows 用户可使用[独立 ZIP 安装包](https://github.com/flashdatadev/flashdata-cli/releases/tag/v1.0.0)。
+软件包包含示例、中英文版本文档和第三方许可证声明。附带文档为 v1.0.1 发布快照；最新安装说明位于 CLI 仓库。Windows 用户可使用[独立 ZIP 安装包](https://github.com/flashdatadev/flashdata-cli/releases/tag/v1.0.1)。
 
 ## 维护说明
 
@@ -56,6 +56,6 @@ ls "$(brew --prefix flashdata)/share/doc/flashdata"
 1. 在 CLI 仓库发布经过测试的 Linux/macOS amd64/arm64 归档和 `SHA256SUMS`。
 2. 更新 `Formula/flashdata.rb` 中四个平台的固定版本 URL 及 SHA-256；Homebrew 会从 URL 推断版本。保留已发布归档和旧标签。
 3. 运行 `python3 scripts/verify_release.py`，并对 `flashdatadev/tap/flashdata` 运行 `brew style`、`brew audit --strict --online`、安装及 `brew test`。
-4. 确认 [GitHub Actions](https://github.com/flashdatadev/homebrew-tap/actions) 通过后再宣布升级。CI 还会检查重新安装、卸载及附带文档/示例；配方测试离线运行，不提交 API 任务。
+4. 确认 [GitHub Actions](https://github.com/flashdatadev/homebrew-tap/actions) 通过后再宣布升级。CI 在四个原生平台检查全新安装、重新安装、卸载、真实 v1.0.0 → v1.0.1 升级及附带文档/示例；配方测试离线运行，不提交 API 任务。
 
 打包问题请提交到[软件源 issues](https://github.com/flashdatadev/homebrew-tap/issues)，CLI 问题请提交到 [CLI issues](https://github.com/flashdatadev/flashdata-cli/issues)。账户支持：[support@flashdata.dev](mailto:support@flashdata.dev)。

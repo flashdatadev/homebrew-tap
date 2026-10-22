@@ -54,3 +54,24 @@ jobs:
           brew test flashdatadev/tap/flashdata
           brew uninstall flashdata
           test ! -e "$(brew --prefix)/bin/flashdata"
+      - name: Upgrade the actual v1.0.0 formula to the current release
+        run: |
+          tap="$(brew --repo flashdatadev/tap)"
+          cp "$tap/Formula/flashdata.rb" "$RUNNER_TEMP/flashdata-current.rb"
+          trap 'cp "$RUNNER_TEMP/flashdata-current.rb" "$tap/Formula/flashdata.rb"' EXIT
+          git -C "$tap" fetch --no-tags --depth=1 origin 6e5b8a114fe8af6cceef905eb25c030057efd246
+          git -C "$tap" show 6e5b8a114fe8af6cceef905eb25c030057efd246:Formula/flashdata.rb > "$tap/Formula/flashdata.rb"
+          brew install flashdatadev/tap/flashdata
+          flashdata --version --json | python3 -c 'import json,sys; assert json.load(sys.stdin)["data"]["version"] == "1.0.0"'
+          state_dir="$RUNNER_TEMP/flashdata-upgrade-state"
+          mkdir -p "$state_dir"
+          printf 'preserve profiles and run history\n' > "$state_dir/package-test-marker"
+          python3 "$tap/scripts/upgrade_state.py" prepare "$state_dir"
+          cp "$RUNNER_TEMP/flashdata-current.rb" "$tap/Formula/flashdata.rb"
+          brew upgrade --verbose flashdatadev/tap/flashdata
+          flashdata --version --json | python3 -c 'import json,sys; assert json.load(sys.stdin)["data"]["version"] == "1.0.1"'
+          brew test flashdatadev/tap/flashdata
+          python3 "$tap/scripts/upgrade_state.py" check "$state_dir"
+          test -s "$state_dir/package-test-marker"
+          brew uninstall flashdata
+          test -s "$state_dir/package-test-marker"
