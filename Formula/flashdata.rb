@@ -5,23 +5,23 @@ class Flashdata < Formula
 
   on_macos do
     on_arm do
-      url "https://github.com/flashdatadev/flashdata-cli/releases/download/v1.1.0/flashdata_1.1.0_darwin_arm64.tar.gz"
-      sha256 "dee0fb10a6dfdd782f310b91dd0961ca6ec09654c8bbde16a938d838435c5748"
+      url "https://github.com/flashdatadev/flashdata-cli/releases/download/v1.1.1/flashdata_1.1.1_darwin_arm64.tar.gz"
+      sha256 "ed5c313792584376ca7440e457878fec9115b47d2d2f5680be2fc76c5b9120a6"
     end
     on_intel do
-      url "https://github.com/flashdatadev/flashdata-cli/releases/download/v1.1.0/flashdata_1.1.0_darwin_amd64.tar.gz"
-      sha256 "ef2e6b0280bb8cfebe4e466f652dda275b97d7479191c0c4a97a7a16b3f455dd"
+      url "https://github.com/flashdatadev/flashdata-cli/releases/download/v1.1.1/flashdata_1.1.1_darwin_amd64.tar.gz"
+      sha256 "7744340e5d89406cf9929d111825df53c5974bf034c95c35a4d47e61d4ae8d11"
     end
   end
 
   on_linux do
     on_arm do
-      url "https://github.com/flashdatadev/flashdata-cli/releases/download/v1.1.0/flashdata_1.1.0_linux_arm64.tar.gz"
-      sha256 "991d998df8504ad2569f19b4eea41062dad2cd3a7cc31a6570a16eebd5cac93a"
+      url "https://github.com/flashdatadev/flashdata-cli/releases/download/v1.1.1/flashdata_1.1.1_linux_arm64.tar.gz"
+      sha256 "be3df696b675f8fd6f8e9782a6b45e629c13a93614febec4374bc5525744be49"
     end
     on_intel do
-      url "https://github.com/flashdatadev/flashdata-cli/releases/download/v1.1.0/flashdata_1.1.0_linux_amd64.tar.gz"
-      sha256 "20936e2068d32634765ed3ab6dc2fa28ea2f92da1208fae73d0cf4d02654f28a"
+      url "https://github.com/flashdatadev/flashdata-cli/releases/download/v1.1.1/flashdata_1.1.1_linux_amd64.tar.gz"
+      sha256 "1e2568f0e92183d9e936a8b9e982a3367aca760102c71a89fd2ef26bf9a1150e"
     end
   end
 
