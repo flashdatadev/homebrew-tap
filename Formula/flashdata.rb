@@ -5,23 +5,23 @@ class Flashdata < Formula
 
   on_macos do
     on_arm do
-      url "https://github.com/flashdatadev/flashdata-cli/releases/download/v1.2.0/flashdata_1.2.0_darwin_arm64.tar.gz"
-      sha256 "ee00bcf8cb322a16d5295c9cd686f2be90be5571292c8fbf0dade7017934769d"
+      url "https://github.com/flashdatadev/flashdata-cli/releases/download/v1.2.1/flashdata_1.2.1_darwin_arm64.tar.gz"
+      sha256 "6d34b503f8ff7b1b6a5344e3c1206cc4601f45c98bde9970550e7124d46e25a4"
     end
     on_intel do
-      url "https://github.com/flashdatadev/flashdata-cli/releases/download/v1.2.0/flashdata_1.2.0_darwin_amd64.tar.gz"
-      sha256 "6592bae98d5df0efc69affe2e072a008393562aa1f92da46af1151afe79cdac4"
+      url "https://github.com/flashdatadev/flashdata-cli/releases/download/v1.2.1/flashdata_1.2.1_darwin_amd64.tar.gz"
+      sha256 "c28acad5b4adaa85ff18988ac823000ce4b81a401bdb5dc8ffd3b6240ac4c07a"
     end
   end
 
   on_linux do
     on_arm do
-      url "https://github.com/flashdatadev/flashdata-cli/releases/download/v1.2.0/flashdata_1.2.0_linux_arm64.tar.gz"
-      sha256 "c52f5bb2204968beca26fa64d28a9024e9ddec923e0fcb6a1ce96b03b0c8c05a"
+      url "https://github.com/flashdatadev/flashdata-cli/releases/download/v1.2.1/flashdata_1.2.1_linux_arm64.tar.gz"
+      sha256 "a3dfdf522551871cfaf430f35ee4f93742703b14794d072c3b083e32eaa84f02"
     end
     on_intel do
-      url "https://github.com/flashdatadev/flashdata-cli/releases/download/v1.2.0/flashdata_1.2.0_linux_amd64.tar.gz"
-      sha256 "29b19b2559f1ad8ad1978b3891007271eade34fa675f498fb43bb1f71c50b34b"
+      url "https://github.com/flashdatadev/flashdata-cli/releases/download/v1.2.1/flashdata_1.2.1_linux_amd64.tar.gz"
+      sha256 "7fca51b6cd967af10d3570c33c50bd3bee6b8fa58c6d50d3c65135a6a434793e"
     end
   end
 
@@ -49,6 +49,17 @@ class Flashdata < Formula
     assert_equal false, setup.fetch("data").fetch("accessVerified")
     system bin/"flashdata", "skills", "verify", "--agent", "codex", "--directory", testpath
     assert_path_exists testpath/".agents/skills/flashdata/SKILL.md"
+    assert_path_exists testpath/".agents/skills/flashdata/references/bulk.md"
+    assert_path_exists testpath/".agents/skills/youtube-metadata/references/bulk.md"
+    assert_path_exists testpath/".agents/skills/youtube-transcript/references/bulk.md"
+    assert_path_exists testpath/".agents/skills/youtube-captions/references/bulk.md"
+    assert_path_exists testpath/".agents/skills/youtube-license-check/references/bulk.md"
+    assert_path_exists testpath/".agents/skills/youtube-download/references/bulk.md"
+    assert_path_exists testpath/".agents/skills/youtube-metadata/assets/bulk-options.json"
+    assert_path_exists testpath/".agents/skills/youtube-transcript/assets/bulk-options.json"
+    assert_path_exists testpath/".agents/skills/youtube-captions/assets/bulk-options.json"
+    assert_path_exists testpath/".agents/skills/youtube-download/assets/bulk-audio-options.json"
+    assert_path_exists testpath/".agents/skills/youtube-download/assets/bulk-video-options.json"
 
     (testpath/"invalid-query.json").write("{}")
     command = "#{bin}/flashdata query --input invalid-query.json --dry-run --json --non-interactive"
