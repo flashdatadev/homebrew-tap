@@ -5,23 +5,23 @@ class Flashdata < Formula
 
   on_macos do
     on_arm do
-      url "https://github.com/flashdatadev/flashdata-cli/releases/download/v1.1.2/flashdata_1.1.2_darwin_arm64.tar.gz"
-      sha256 "124a2e4598882b9f48a432ce1b4fb40eb37ee82a3eaa1e3599123f7cd45f9a85"
+      url "https://github.com/flashdatadev/flashdata-cli/releases/download/v1.2.0/flashdata_1.2.0_darwin_arm64.tar.gz"
+      sha256 "ee00bcf8cb322a16d5295c9cd686f2be90be5571292c8fbf0dade7017934769d"
     end
     on_intel do
-      url "https://github.com/flashdatadev/flashdata-cli/releases/download/v1.1.2/flashdata_1.1.2_darwin_amd64.tar.gz"
-      sha256 "f5ca3b4a4cc03261898efe2458505aece6f7ed265378c123b139670a7ccc116e"
+      url "https://github.com/flashdatadev/flashdata-cli/releases/download/v1.2.0/flashdata_1.2.0_darwin_amd64.tar.gz"
+      sha256 "6592bae98d5df0efc69affe2e072a008393562aa1f92da46af1151afe79cdac4"
     end
   end
 
   on_linux do
     on_arm do
-      url "https://github.com/flashdatadev/flashdata-cli/releases/download/v1.1.2/flashdata_1.1.2_linux_arm64.tar.gz"
-      sha256 "9213b6de8c8297ebcc273b970db1b2a3e6a35ac0d4dbbc7b47664539b13e08ec"
+      url "https://github.com/flashdatadev/flashdata-cli/releases/download/v1.2.0/flashdata_1.2.0_linux_arm64.tar.gz"
+      sha256 "c52f5bb2204968beca26fa64d28a9024e9ddec923e0fcb6a1ce96b03b0c8c05a"
     end
     on_intel do
-      url "https://github.com/flashdatadev/flashdata-cli/releases/download/v1.1.2/flashdata_1.1.2_linux_amd64.tar.gz"
-      sha256 "b0bd985a0e73362edf6296402508d4f51a73897b7d393e081bb27191aafb8136"
+      url "https://github.com/flashdatadev/flashdata-cli/releases/download/v1.2.0/flashdata_1.2.0_linux_amd64.tar.gz"
+      sha256 "29b19b2559f1ad8ad1978b3891007271eade34fa675f498fb43bb1f71c50b34b"
     end
   end
 
@@ -38,10 +38,17 @@ class Flashdata < Formula
 
     result = JSON.parse(shell_output("#{bin}/flashdata commands --json"))
     names = result.fetch("data").fetch("commands").map { |command| command.fetch("name") }
-    %w[auth bulk query runs search youtube].each { |name| assert_includes names, name }
+    %w[auth bulk query runs search setup skills youtube].each { |name| assert_includes names, name }
     discovery = result.fetch("data").fetch("commands").find { |command| command.fetch("name") == "discover" }
     discovery_names = discovery.fetch("commands").map { |command| command.fetch("name") }
     %w[plans status].each { |name| assert_includes discovery_names, name }
+
+    command = "#{bin}/flashdata setup --skip-auth --agent codex --directory #{testpath} --non-interactive"
+    setup = JSON.parse(shell_output(command))
+    assert_equal true, setup.fetch("data").fetch("skillsVerified")
+    assert_equal false, setup.fetch("data").fetch("accessVerified")
+    system bin/"flashdata", "skills", "verify", "--agent", "codex", "--directory", testpath
+    assert_path_exists testpath/".agents/skills/flashdata/SKILL.md"
 
     (testpath/"invalid-query.json").write("{}")
     command = "#{bin}/flashdata query --input invalid-query.json --dry-run --json --non-interactive"
